@@ -5,33 +5,55 @@
 			//simulate server reponse
 			var questions = '[{"question":"Który z tych płazów jest największy?","options":["Wąż boa","Waran","Żaba"],"answer":"Żaba"},{"question":"Który miesiąc ma 28 dni?","options":["Luty","Luty w roku przestępnym","Każdy miesiąc"],"answer":"Luty"},{"question":"Malarz miał namalować na drzwiach numery od 1 do 100. Ile dziewiątek musiał namalować?","options":["1","11","20"],"answer":"11"},{"question":"Każdy kij ma dwa końce. Ile końców ma 7,5 kija?","options":["7,5","15","16"],"answer":"16"}]';
 			var dataModel = JSON.parse(questions);
-			
+
 			for (i = 0; i < dataModel.length; i++) {
 				var article = document.createElement('article');
 				article.innerHTML = "<p>" + dataModel[i].question + "</p>";
-				
+
 				for(j = 0; j < dataModel[i].options.length; j++) {
 					var radio = document.createElement('input');
 					radio.setAttribute("type", "radio");
 					radio.setAttribute("id","options" + i + "" + j);
-					radio.setAttribute("value", j);
+					radio.setAttribute("value", i + ":" + dataModel[i].options[j]);
 					radio.setAttribute("name", "options" + i);
-					
+
+// 					radio.onclick = function() {
+// 						alert("Twoja odpowiedź została zaznaczona");
+// 					}
+
 					var label = document.createElement("label");
 					label.setAttribute("for","options" + i + "" + j);
 					label.innerHTML = dataModel[i].options[j];
-					
+
 					var breakTag = document.createElement("br");
-					
+
 					article.append(radio);
 					article.append(label);
 					article.append(breakTag);
 				}
-				
+
 				document.getElementById("questions").append(article);
 			}
+
+				var button = document.createElement('button');
+				button.innerHTML = "Sprawdź odpowiedzi!";
+				button.onclick = function() {
+					var radioButtons = document.querySelectorAll("[id^=options]");
+					console.log(radioButtons);
+
+					for (i = 0; i < radioButtons.length; i++) {
+						if(radioButtons[i].checked) {
+								var options = radioButtons[i].value.split(":");
+								console.log(dataModel[options[0]].answer === options[1]);
+						}
+					}
+				}
+
+				var breakTag = document.createElement("br");
+				document.getElementById("questions").append(breakTag);
+				document.getElementById("questions").append(button);
 		}
-		
+
 		window.onload = init;
 	</script>
 	</head>
@@ -42,9 +64,9 @@
 			</header>
 			<hr />
 			<section id = "questions">
-			
+
 			</section>
 		</center>
 	</body>
-	
+
 </html>
